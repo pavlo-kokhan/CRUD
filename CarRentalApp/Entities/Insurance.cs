@@ -1,8 +1,8 @@
 ﻿namespace CarRentalApp.Entities;
 
-public partial class Insurance
+public sealed class Insurance
 {
-    public int Id { get; set; }
+    public int Id { get; init; }
 
     public string? Company { get; set; }
 
@@ -14,5 +14,5 @@ public partial class Insurance
 
     public decimal? Price { get; set; }
 
-    public virtual ICollection<Car> Cars { get; set; } = new List<Car>();
+    public ICollection<Car> Cars { get; init; } = new List<Car>();
 }

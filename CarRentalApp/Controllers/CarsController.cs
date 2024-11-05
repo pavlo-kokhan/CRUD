@@ -1,6 +1,6 @@
 ﻿using CarRentalApp.Contexts;
-using CarRentalApp.Dtos.Requests;
-using CarRentalApp.Dtos.Responses;
+using CarRentalApp.Dto.Cars;
+using CarRentalApp.Dto.Insurances;
 using CarRentalApp.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,14 +22,14 @@ namespace CarRentalApp.Controllers
         {
             var cars = _context
                 .Cars
-                .Select(c => new CarsResponseDto(
+                .Select(c => new CarDto(
                     c.Id,
                     c.Make,
                     c.Model,
                     c.Year,
                     c.LicensePlate,
                     c.PricePerDay,
-                    new InsuranceResponseDto(
+                    new InsuranceDto(
                         c.InsuranceId,
                         c.Insurance.Company,
                         c.Insurance.PolicyNumber,
@@ -47,14 +47,14 @@ namespace CarRentalApp.Controllers
             var car = _context
                 .Cars
                 .Where(c => c.Id == id)
-                .Select(c => new CarsResponseDto(
+                .Select(c => new CarDto(
                     c.Id,
                     c.Make,
                     c.Model,
                     c.Year,
                     c.LicensePlate,
                     c.PricePerDay,
-                    new InsuranceResponseDto(
+                    new InsuranceDto(
                         c.InsuranceId,
                         c.Insurance.Company,
                         c.Insurance.PolicyNumber,
@@ -65,42 +65,41 @@ namespace CarRentalApp.Controllers
 
             if (car == null)
             {
-                return NotFound();
+                return NotFound($"Car with id = {id} does not exist");
             }
 
             return Ok(car);
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] CarRequestDto carRequestDto)
+        public IActionResult Post([FromBody] CreateCarDto createCarDto)
         {
-            var relatedInsurance = _context
+            var relatedInsuranceExists = _context
                 .Insurances
-                .FirstOrDefault(i => i.Id == carRequestDto.InsuranceId);
+                .Any(i => i.Id == createCarDto.InsuranceId);
 
-            if (relatedInsurance == null)
+            if (!relatedInsuranceExists)
             {
-                return BadRequest($"Insurance with id = {carRequestDto.InsuranceId} does not exist");
+                return NotFound($"Insurance with id = {createCarDto.InsuranceId} does not exist");
             }
             
             var car = new Car
             {
-                Make = carRequestDto.Make,
-                Model = carRequestDto.Model,
-                Year = carRequestDto.Year,
-                LicensePlate = carRequestDto.LicensePlate,
-                PricePerDay = carRequestDto.PricePerDay,
-                InsuranceId = carRequestDto.InsuranceId,
-                Insurance = relatedInsurance
+                Make = createCarDto.Make,
+                Model = createCarDto.Model,
+                Year = createCarDto.Year,
+                LicensePlate = createCarDto.LicensePlate,
+                PricePerDay = createCarDto.PricePerDay,
+                InsuranceId = createCarDto.InsuranceId,
             };
             
             _context.Cars.Add(car);
             _context.SaveChanges();
-            return CreatedAtAction(nameof(Get), new {id = car.Id}, car);
+            return Ok();
         }
         
         [HttpPut("{id}")]
-        public IActionResult Put([FromRoute] int id, CarRequestDto carRequestDto)
+        public IActionResult Put([FromRoute] int id, UpdateCarDto updateCarDto)
         {
             var car = _context
                 .Cars
@@ -108,17 +107,17 @@ namespace CarRentalApp.Controllers
             
             if (car == null)
             {
-                return NotFound();
+                return NotFound($"Car with id = {id} does not exist");
             }
             
-            car.Make = carRequestDto.Make;
-            car.Model = carRequestDto.Model;
-            car.Year = carRequestDto.Year;
-            car.LicensePlate = carRequestDto.LicensePlate;
-            car.PricePerDay = carRequestDto.PricePerDay;
+            car.Make = updateCarDto.Make;
+            car.Model = updateCarDto.Model;
+            car.Year = updateCarDto.Year;
+            car.LicensePlate = updateCarDto.LicensePlate;
+            car.PricePerDay = updateCarDto.PricePerDay;
             
             _context.SaveChanges();
-            return NoContent();
+            return Ok();
         }
         
         [HttpDelete("{id}")]
@@ -130,12 +129,12 @@ namespace CarRentalApp.Controllers
             
             if (car == null)
             {
-                return NotFound();
+                return NotFound($"Car with id = {id} does not exist");
             }
         
             _context.Cars.Remove(car);
             _context.SaveChanges();
-            return NoContent();
+            return Ok();
         }
     }
 }

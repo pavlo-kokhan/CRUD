@@ -108,3 +108,4 @@ C:\Pavlo\lpnu\MyFolder\sem5\SoftwareConstruction\lab_3\CarRentalApp\CarRentalApp
 C:\Pavlo\lpnu\MyFolder\sem5\SoftwareConstruction\lab_3\CarRentalApp\CarRentalApp\obj\Debug\net8.0\CarRentalApp.pdb
 C:\Pavlo\lpnu\MyFolder\sem5\SoftwareConstruction\lab_3\CarRentalApp\CarRentalApp\obj\Debug\net8.0\CarRentalApp.genruntimeconfig.cache
 C:\Pavlo\lpnu\MyFolder\sem5\SoftwareConstruction\lab_3\CarRentalApp\CarRentalApp\obj\Debug\net8.0\ref\CarRentalApp.dll
+C:\Pavlo\lpnu\MyFolder\sem5\SoftwareConstruction\lab_3\CarRentalApp\CarRentalApp\obj\Debug\net8.0\CarRentalApp.sourcelink.json

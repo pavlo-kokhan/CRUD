@@ -1,24 +1,20 @@
-﻿namespace CarRentalApp.Dtos.Responses;
+﻿namespace CarRentalApp.Dto.Insurances;
 
-public class InsuranceResponseDto
+public class UpdateInsuranceDto
 {
-    public InsuranceResponseDto(
-        int id, 
+    public UpdateInsuranceDto(
         string? company, 
         string? policyNumber, 
         DateOnly? startDate, 
         DateOnly? endDate, 
         decimal? price)
     {
-        Id = id;
         Company = company;
         PolicyNumber = policyNumber;
         StartDate = startDate;
         EndDate = endDate;
         Price = price;
     }
-
-    public int Id { get; }
 
     public string? Company { get; }
 

@@ -1,27 +1,22 @@
-﻿namespace CarRentalApp.Dtos.Responses;
+﻿namespace CarRentalApp.Dto.Cars;
 
-public class CarsResponseDto
+public class UpdateCarDto
 {
-    public CarsResponseDto(
-        int id, 
+    public UpdateCarDto(
         string? make, 
         string? model, 
         int? year, 
         string? licensePlate, 
         decimal? pricePerDay, 
-        InsuranceResponseDto insurance)
+        int insuranceId)
     {
-        Id = id;
         Make = make;
         Model = model;
         Year = year;
         LicensePlate = licensePlate;
         PricePerDay = pricePerDay;
-        Insurance = insurance;
+        InsuranceId = insuranceId;
     }
-
-    public int Id { get; }
-
     public string? Make { get; }
 
     public string? Model { get; }
@@ -32,5 +27,5 @@ public class CarsResponseDto
 
     public decimal? PricePerDay { get; }
     
-    public InsuranceResponseDto Insurance { get; }
+    public int InsuranceId { get; }
 }

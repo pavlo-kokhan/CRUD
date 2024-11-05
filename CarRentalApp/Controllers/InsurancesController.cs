@@ -1,6 +1,5 @@
 ﻿using CarRentalApp.Contexts;
-using CarRentalApp.Dtos.Requests;
-using CarRentalApp.Dtos.Responses;
+using CarRentalApp.Dto.Insurances;
 using CarRentalApp.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +21,7 @@ public class InsurancesController : ControllerBase
     {
         var insurances = _context
             .Insurances
-            .Select(i => new InsuranceResponseDto(
+            .Select(i => new InsuranceDto(
                 i.Id,
                 i.Company,
                 i.PolicyNumber,
@@ -40,7 +39,7 @@ public class InsurancesController : ControllerBase
         var insurance = _context
             .Insurances
             .Where(i => i.Id == id)
-            .Select(i => new InsuranceResponseDto(
+            .Select(i => new InsuranceDto(
                 i.Id,
                 i.Company,
                 i.PolicyNumber,
@@ -51,43 +50,46 @@ public class InsurancesController : ControllerBase
 
         if (insurance == null)
         {
-            return NotFound();
+            return NotFound($"Insurance with id = {id} does not exist");
         }
 
         return Ok(insurance);
     }
     
     [HttpPost]
-    public IActionResult Post([FromBody] InsuranceRequestDto insuranceRequestDto)
+    public IActionResult Post([FromBody] CreateInsuranceDto createInsuranceDto)
     {
-        var insurance = new Insurance()
+        var insurance = new Insurance
         {
-            Company = insuranceRequestDto.Company,
-            PolicyNumber = insuranceRequestDto.PolicyNumber,
-            StartDate = insuranceRequestDto.StartDate,
-            EndDate = insuranceRequestDto.EndDate,
-            Price = insuranceRequestDto.Price
+            Company = createInsuranceDto.Company,
+            PolicyNumber = createInsuranceDto.PolicyNumber,
+            StartDate = createInsuranceDto.StartDate,
+            EndDate = createInsuranceDto.EndDate,
+            Price = createInsuranceDto.Price
         };
         
         _context.Insurances.Add(insurance);
         _context.SaveChanges();
-        return CreatedAtAction(nameof(Get), new {id = insurance.Id}, insurance);
+        return Ok();
     }
     
     [HttpPut("{id}")]
-    public IActionResult Put([FromRoute] int id, InsuranceRequestDto insuranceRequestDto)
+    public IActionResult Put([FromRoute] int id, UpdateInsuranceDto updateInsuranceDto)
     {
-        var insurance = _context.Insurances.Find(id);
+        var insurance = _context
+            .Insurances
+            .Find(id);
+        
         if (insurance == null)
         {
-            return NotFound();
+            return NotFound($"Insurance with id = {id} does not exist");
         }
             
-        insurance.Company = insuranceRequestDto.Company;
-        insurance.PolicyNumber = insuranceRequestDto.PolicyNumber;
-        insurance.StartDate = insuranceRequestDto.StartDate;
-        insurance.EndDate = insuranceRequestDto.EndDate;
-        insurance.Price = insuranceRequestDto.Price;
+        insurance.Company = updateInsuranceDto.Company;
+        insurance.PolicyNumber = updateInsuranceDto.PolicyNumber;
+        insurance.StartDate = updateInsuranceDto.StartDate;
+        insurance.EndDate = updateInsuranceDto.EndDate;
+        insurance.Price = updateInsuranceDto.Price;
             
         _context.SaveChanges();
         return Ok();
@@ -96,10 +98,13 @@ public class InsurancesController : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult Delete([FromRoute] int id)
     {
-        var insurance = _context.Insurances.Find(id);
+        var insurance = _context
+            .Insurances
+            .Find(id);
+        
         if (insurance == null)
         {
-            return NotFound();
+            return NotFound($"Insurance with id = {id} does not exist");
         }
 
         _context.Insurances.Remove(insurance);

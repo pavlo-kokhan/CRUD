@@ -1,8 +1,8 @@
 ﻿namespace CarRentalApp.Entities;
 
-public partial class Car
+public sealed class Car
 {
-    public int Id { get; set; }
+    public int Id { get; init; }
 
     public string? Make { get; set; }
 
@@ -14,7 +14,7 @@ public partial class Car
 
     public decimal? PricePerDay { get; set; }
 
-    public int InsuranceId { get; set; }
+    public int InsuranceId { get; init; }
 
-    public virtual Insurance Insurance { get; set; } = null!;
+    public Insurance Insurance { get; init; } = null!;
 }

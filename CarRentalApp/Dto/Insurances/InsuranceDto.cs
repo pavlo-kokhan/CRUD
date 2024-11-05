@@ -1,20 +1,24 @@
-﻿namespace CarRentalApp.Dtos.Requests;
+﻿namespace CarRentalApp.Dto.Insurances;
 
-public class InsuranceRequestDto
+public class InsuranceDto
 {
-    public InsuranceRequestDto(
+    public InsuranceDto(
+        int id, 
         string? company, 
         string? policyNumber, 
         DateOnly? startDate, 
         DateOnly? endDate, 
         decimal? price)
     {
+        Id = id;
         Company = company;
         PolicyNumber = policyNumber;
         StartDate = startDate;
         EndDate = endDate;
         Price = price;
     }
+
+    public int Id { get; }
 
     public string? Company { get; }
 
