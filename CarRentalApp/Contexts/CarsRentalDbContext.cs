@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CarRentalApp.Contexts;
 
-public partial class CarsRentalDbContext : DbContext
+public class CarsRentalDbContext : DbContext
 {
     public CarsRentalDbContext()
     {
@@ -76,9 +76,5 @@ public partial class CarsRentalDbContext : DbContext
                 .HasColumnName("price");
             entity.Property(e => e.StartDate).HasColumnName("start_date");
         });
-
-        OnModelCreatingPartial(modelBuilder);
     }
-
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

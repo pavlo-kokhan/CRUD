@@ -1,6 +1,6 @@
 ﻿namespace CarRentalApp.Entities;
 
-public sealed class Car
+public class Car
 {
     public int Id { get; init; }
 
@@ -16,5 +16,5 @@ public sealed class Car
 
     public int InsuranceId { get; init; }
 
-    public Insurance Insurance { get; init; } = null!;
+    public virtual Insurance Insurance { get; init; } = null!;
 }
